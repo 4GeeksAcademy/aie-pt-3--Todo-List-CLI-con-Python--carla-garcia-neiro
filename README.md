@@ -1,1 +1,4 @@
-# aie-pt-3--Todo-List-CLI-con-Python--carla-garcia-neiro
+# Todo List CLI con Python
+
+Proyecto base para una aplicación de línea de comandos (CLI) de gestión de tareas,
+utilizando únicamente la librería estándar de Python.
