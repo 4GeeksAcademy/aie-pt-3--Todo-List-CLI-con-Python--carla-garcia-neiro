@@ -39,18 +39,71 @@ def save_todos():
             writer.writerow([task])
 
 
+def load_todos():
+    """Carga las tareas desde todos.csv y reconstruye la lista en memoria."""
+    todos.clear()
+
+    try:
+        with open("todos.csv", mode="r", newline="", encoding="utf-8") as csv_file:
+            reader = csv.reader(csv_file)
+            for row in reader:
+                if row:
+                    todos.append(row[0])
+    except FileNotFoundError:
+        return
+
+
 def main():
-    """Prueba básica de Fases 1, 2 y 3."""
-    add_one_task("Preparar pedido")
-    add_one_task("Llamar al transportista")
-    add_one_task("Revisar inventario")
+    """Ejecuta el menú principal de la CLI de tareas."""
+    while True:
+        print("\n--- MENU TODO LIST CLI ---")
+        print("1. Agregar una nueva tarea")
+        print("2. Mostrar todas las tareas")
+        print("3. Eliminar una tarea")
+        print("4. Guardar tareas en todos.csv")
+        print("5. Cargar tareas desde todos.csv")
+        print("6. Salir")
 
-    print("Lista inicial:")
-    print_list()
+        option = input("Selecciona una opcion (1-6): ").strip()
 
-    delete_task(2)
-    print("\nLista tras delete_task(2):")
-    print_list()
+        if option == "1":
+            title = input("Escribe el titulo de la tarea: ").strip()
+            add_one_task(title)
+            print("Accion ejecutada: tarea agregada.")
+
+        elif option == "2":
+            print("Accion ejecutada: mostrar tareas.")
+            print_list()
+
+        elif option == "3":
+            number_text = input("Escribe el numero de la tarea a eliminar: ").strip()
+            try:
+                number_to_delete = int(number_text)
+            except ValueError:
+                print("La entrada no es valida. Debes escribir un numero entero.")
+                continue
+
+            previous_count = len(todos)
+            delete_task(number_to_delete)
+            if len(todos) < previous_count:
+                print("Accion ejecutada: tarea eliminada.")
+            else:
+                print("Accion ejecutada: no se elimino ninguna tarea.")
+
+        elif option == "4":
+            save_todos()
+            print("Accion ejecutada: tareas guardadas en todos.csv.")
+
+        elif option == "5":
+            load_todos()
+            print("Accion ejecutada: tareas cargadas desde todos.csv.")
+
+        elif option == "6":
+            print("Saliendo de la aplicacion...")
+            break
+
+        else:
+            print("La opcion no es valida. Elige un numero del 1 al 6.")
 
 
 if __name__ == "__main__":
